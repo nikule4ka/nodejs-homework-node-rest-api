@@ -62,17 +62,17 @@ router.delete('/:contactId', async (req, res, next) => {
 
 router.put('/:contactId',validationUpdateContact, async (req, res, next) => {
   try {
-    const updateContacts = await Contacts.updateContact(
+    const updatetedContacts = await Contacts.updateContact(
       req.params.contactId,
       req.body
-    )
-    if (updateContacts) {
+    );
+    if (updatetedContacts) {
       return res.json({
         status: 'success',
         code: 200,
         message: 'Contact updated',
-        data: { updateContacts },
-      })
+        data: { updatetedContacts }
+      });
     }
     return res.json({
       status: 'error',
