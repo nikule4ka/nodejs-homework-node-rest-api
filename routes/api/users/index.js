@@ -8,7 +8,7 @@ const {
   validationSubscriptionUser
 } = require('./validation');
 
-router.post('/signup', ctrl.signup);
+router.post('/signup', validationCreateUser, ctrl.signup);
 router.post('/login', validationLogInUser, ctrl.login);
 router.post('/logout', validationSubscriptionUser, ctrl.logout);
 

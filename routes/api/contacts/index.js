@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const ctrl = require('../../../controllers/contacts');
+const guard = require('../../../helpers/guard');
+
 
 const {
   validationCreateContact,
@@ -8,22 +10,24 @@ const {
   validationFavoriteContact
 } = require('./validation');
 
+
 router.use((req, res, next) => {
   console.log(req.url);
   next();
 });
 
 router
-  .get('/', ctrl.getAll)
-  .post('/', validationCreateContact, ctrl.addContact);
+  .get('/', guard, ctrl.getAll)
+  .post('/', guard, validationCreateContact, ctrl.addContact);
 
 router
-  .get('/:contactId', ctrl.getContactById)
-  .delete('/:contactId', ctrl.removeContact)
-  .put('/:contactId', validationUpdateContact, ctrl.updateContact);
+  .get('/:contactId', guard, ctrl.getContactById)
+  .delete('/:contactId', guard, ctrl.removeContact)
+  .put('/:contactId', guard, validationUpdateContact, ctrl.updateContact);
 
 router.patch(
   '/:contactId/favorite',
+  guard,
   validationFavoriteContact,
   ctrl.updateStatusContact
 );
