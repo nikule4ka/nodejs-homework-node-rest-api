@@ -5,10 +5,10 @@ const schemaCreateContact = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).required(),
   email: Joi.string().email().optional(),
   phone: Joi.string()
-    .pattern(/^\(\d{3}\)\s\d{3}-\d{4}/)
+    .pattern(/^[0-9]{9,15}$/)
     .optional(),
   favorite: Joi.boolean().optional()
-}).or('name', 'email', 'phone')
+}).or('name', 'email', 'phone');
 
 const schemaUpdateContact = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).required(),
