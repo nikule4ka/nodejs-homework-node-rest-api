@@ -12,6 +12,7 @@ const {
 router.post('/signup', validationCreateUser, ctrl.signup);
 router.post('/login', validationLogInUser, ctrl.login);
 router.post('/logout', guard, ctrl.logout);
-router.get('/current', guard, validationSubscriptionUser, ctrl.);
+router.get('/current', guard, ctrl.current);
+router.patch('/', guard, validationSubscriptionUser, ctrl.updateSubscribtions);
 
 module.exports = router;

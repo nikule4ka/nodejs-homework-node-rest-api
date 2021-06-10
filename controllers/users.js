@@ -20,7 +20,7 @@ const signup = async (req, res, next) => {
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
-      data: { id, email, subscription }
+      user: { id, email, subscription }
     });
   } catch (e) {
     next(e);
@@ -45,7 +45,7 @@ const login = async (req, res, next) => {
 
     await Users.updateToken(id, token);
 
-    return res.json({ status: 'success', code: HttpCode.OK, data: { token } });
+    return res.json({ status: 'success', code: HttpCode.OK, user: { token } });
   } catch (e) {
     next(e);
   }
@@ -62,4 +62,51 @@ const logout = async (req, res, next) => {
   }
 };
 
-module.exports = { signup, login, logout };
+const current = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(HttpCode.UNAUTHORIZED).json({
+        status: 'error',
+        code: HttpCode.UNAUTHORIZED,
+        message: 'Not authorized'
+      });
+    }
+    const user = await Users.getCurrentUser(req.user.id);
+    return res.status(HttpCode.OK).json({
+      status: 'success',
+      code: HttpCode.OK,
+      user
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+const updateSubscribtions = async (req, res, next) => {
+  try {
+    const updateSubscriptions = await Users.updateSubscriptionsStatus(
+      req.user.id,
+      req.body
+    );
+
+    if (!updateSubscriptions) {
+      return res.status(HttpCode.UNAUTHORIZED).json({
+        status: 'error',
+        code: HttpCode.UNAUTHORIZED,
+        message: 'Not authorized'
+      });
+    }
+    return res.status(HttpCode.OK).json({
+      status: 'success',
+      code: HttpCode.OK,
+      user: {
+        email: updateSubscriptions.email,
+        subscription: updateSubscriptions.subscription
+      }
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports = { signup, login, logout, current, updateSubscribtions };
