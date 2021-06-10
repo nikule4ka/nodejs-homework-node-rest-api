@@ -3,7 +3,7 @@ const { Subscription } = require('../../../helpers/constans');
 
 const validateCreateUser = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().alphanum().min(7).max(14).required(),
+  password: Joi.string().alphanum().min(3).max(14).required(),
   subscription: Joi.string()
     .valid(Subscription.STARTER, Subscription.PRO, Subscription.BUSINESS)
     .optional()

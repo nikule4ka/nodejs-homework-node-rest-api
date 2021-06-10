@@ -3,8 +3,15 @@ const Contacts = require('../repositories/contacts')
 const getAll = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const contacts = await Contacts.listContacts(userId);
-    return res.json({ status: 'success', code: 200, data: { contacts } });
+    const { docs: contacts, ...rest } = await Contacts.listContacts(
+      userId,
+      req.query
+    );
+    return res.json({
+      status: 'success',
+      code: 200,
+      data: { contacts, ...rest }
+    });
   } catch (e) {
     next(e);
   }
@@ -34,7 +41,7 @@ const getContactById = async (req, res, next) => {
 const addContact = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const contacts = await Contacts.addContact(req.body, userId);
+    const contacts = await Contacts.addContact(userId, req.body);
     return res
       .status(201)
       .json({ status: 'success', code: 201, data: { contacts } });
@@ -93,10 +100,12 @@ const updateContact = async (req, res, next) => {
 
 const updateStatusContact = async (req, res, next) => {
   try {
+    const userId = req.user.id;
     const contactStatus = await Contacts.updateStatusContact(
+      userId,
       req.params.contactId,
       req.body
-    )
+    );
     if (contactStatus) {
       return res.json({
         status: 'success',
