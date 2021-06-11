@@ -2,13 +2,13 @@ const Joi = require('joi')
 const mongoose = require('mongoose')
 
 const schemaCreateContact = Joi.object({
-  name: Joi.string().alphanum().min(3).max(30).required(),
+  name: Joi.string().alphanum().min(2).max(30).required(),
   email: Joi.string().email().optional(),
   phone: Joi.string()
-    .pattern(/^\(\d{3}\)\s\d{3}-\d{4}/)
+    .pattern(/^[0-9]{9,15}$/)
     .optional(),
   favorite: Joi.boolean().optional()
-}).or('name', 'email', 'phone')
+}).or( 'email', 'phone');
 
 const schemaUpdateContact = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).required(),
@@ -46,11 +46,12 @@ module.exports = {
     return validate(schemaFavoriteContact, req.body, next)
   },
   validateMongoId: (req, res, next) => {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    
+    if (!mongoose.isValidObjectId(req.params.id)) {
       return next({
         status: 400,
-        message: 'Invalid ObjectId'
-      })
+        message: 'Invalid Id'
+      });
     }
     next()
   }
