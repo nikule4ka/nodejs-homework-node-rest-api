@@ -1,6 +1,8 @@
 const Users = require('../repositories/users');
 const { HttpCode } = require('../helpers/constans');
 const jwt = require('jsonwebtoken');
+const fs = require('fs/promises')
+const path = require('path')
 require('dotenv').config();
 const UploadAvatarService = require('../services/local-upload')
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -107,7 +109,12 @@ const avatars = async (req, res, next) => {
     const id = req.user.id
     const uploads = new UploadAvatarService(process.env.AVATAR_OF_USERS)
     const avatarUrl = await uploads.saveAvatar({ idUser: id, file: req.file })
-    // TODO: need delete old avatar
+    // replacement old avatar
+    try {
+      await fs.unlink(path.join(process.env.AVATAR_OF_USERS, req.user.avatar))
+    } catch (error) {
+      console.log(error.message)
+    }
 
     await Users.updateAvatar(id, avatarUrl)
     res.json({ status: 'success', code: HttpCode.OK, user: { avatarUrl } })
