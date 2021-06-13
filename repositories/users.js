@@ -26,6 +26,10 @@ const updateSubscriptionsStatus = async (id, body) => {
   return await User.findOneAndUpdate({ _id: id }, { ...body }, { new: true });
 };
 
+const updateAvatar = async (id, avatar) => {
+  return await User.updateOne({ _id: id }, { avatar })
+}
+
 
 
 module.exports = {
@@ -34,5 +38,6 @@ module.exports = {
   create,
   updateToken,
   getCurrentUser,
-  updateSubscriptionsStatus
-};
+  updateSubscriptionsStatus,
+  updateAvatar
+}
