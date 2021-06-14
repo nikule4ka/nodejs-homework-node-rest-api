@@ -1,4 +1,5 @@
 const Contacts = require('../repositories/contacts')
+const { HttpCode } = require('../helpers/constans')
 
 const getAll = async (req, res, next) => {
   try {
@@ -81,18 +82,18 @@ const updateContact = async (req, res, next) => {
       req.body
     );
     if (updatetedContacts) {
-      return res.json({
+      return res.status(HttpCode.OK).json({
         status: 'success',
         code: 200,
         message: 'Contact updated',
         data: { updatetedContacts }
-      });
+      })
     }
-    return res.json({
+    return res.status(HttpCode.NOT_FOUND).json({
       status: 'error',
       code: 404,
       message: 'Not found'
-    });
+    })
   } catch (e) {
     next(e)
   }
