@@ -21,7 +21,6 @@
     "express-rate-limit": "^5.2.6",
     "gravatar": "^1.8.1",
     "helmet": "^4.6.0",
-    "jest": "^27.0.4",
     "jimp": "^0.16.1",
     "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
@@ -39,6 +38,8 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "nodemon": "2.0.7"
+    "jest": "^27.0.4",
+    "nodemon": "2.0.7",
+    "supertest": "^6.1.3"
   }
 }
